@@ -9,21 +9,13 @@ class RadioBoxPage(Driver):
         self.open_page("https://demoqa.com/radio-button")
         self.get_elements()
         
-    def get_labels(self):
-        elements = self.browser.find_elements_by_xpath("//div[@class='container playgound-body']/div[@class='row']/div/div[1]/div/label")
-        self.labels = []
-        for i in elements:
-            self.labels.append(i.text)
-            
-    def get_radio_buttons(self):
-        elements = self.browser.find_elements_by_xpath("//div[@class='container playgound-body']/div[@class='row']/div/div[1]/div/input")
-        self.radio_buttons = {}
-        for i in range(len(self.labels)):
-            self.radio_buttons[self.labels[i]] = elements[i]
-            
     def get_elements(self):
-        self.get_labels()
-        self.get_radio_buttons()
+        radio_buttons = self.browser.find_elements_by_xpath("//div[@class='container playgound-body']/div[@class='row']/div/div[1]/div/*[self::label or self::input]")
+        self.labels = {}
+        for i in range(0, len(radio_buttons), 2):
+            label = radio_buttons[i+1].text
+            btn = radio_buttons[i]
+            self.labels[label] = btn
         
     def select_option(self, option=''):
         self.current_option = option
@@ -36,3 +28,11 @@ class RadioBoxPage(Driver):
         except:
             return None
         
+        
+        
+""" Testing """
+
+#aux = RadioBoxPage()
+#for x in aux.labels:
+#    print(x)
+#aux.close_page()
