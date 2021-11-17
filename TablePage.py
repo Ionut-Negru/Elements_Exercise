@@ -1,12 +1,12 @@
 from Driver import *
 from TextBoxPage import TextBoxPage
+import time
 
 class TablePage(TextBoxPage):
     
     def __init__(self):
         super().__init__()
-        self.set_label_xpath("//div[@class='modal-body']/form[@id='userForm']/div/div/label")
-        self.set_text_boxs_xpath("//div[@class='modal-body']/form[@id='userForm']/div/div/input")
+        self.set_wrappers_xpath("//div[@class='modal-body']/form[@id='userForm']/div[contains(@id,'wrapper')]")
         self.set_submit_button_xpath("//form[@id='userForm']/div/div/button[@id='submit']")
         
     def get_table_head(self):
@@ -57,24 +57,34 @@ class TablePage(TextBoxPage):
         self.clear_empty_rows()
         self.get_actions_for_rows()
     
-    def add_new_row(self):
-        add_button = self.browser.find_element_by_xpath("//div[@class='web-tables-wrapper']/div/div/button[@id='addNewRecordButton']")
+    def add_new_row(*args):
+        add_button = args[0].browser.find_element_by_xpath("//div[@class='web-tables-wrapper']/div/div/button[@id='addNewRecordButton']")
         add_button.click()
-        self.get_labels()
-        self.get_text_boxs()
+        args[0].collect_from_wrappers()
+        args[0].insert_text_in_all(args[1:])
+        args[0].submit_form()
+        args[0].table.append(args[0].inputs)
+        args[0].get_actions_for_rows()
     
     def delete_row(self, row=0):
         self.table[row]['Action'][1].click()
         del self.table[row]
     
     def update_row(*args):
-        args[0].table[args[1]]['Action'][0].click()
-        args[0].get_labels()
-        args[0].get_text_boxs()
+        element = args[0].table[args[1]]['Action'][0]
+        element.click()
+        args[0].collect_from_wrappers()
         args[0].insert_text_in_all(args[2:])
         args[0].submit_form()
-        i = 2
-        for x in args[0].table[args[1]]:
-            args[0].table[row][x] = args[i]
-            i = i + 1
-    
+        args[0].get_table()
+
+
+""" Testing """
+
+x = TablePage()
+x.open_page("https://demoqa.com/webtables")
+x.get_table()
+x.add_new_row('Ionut', 'Negru', 'inegru@luxoft.com', '22', '2000', 'IT')
+for aux in x.table:
+    print(aux)
+x.close_page()
