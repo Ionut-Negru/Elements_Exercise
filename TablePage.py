@@ -77,14 +77,3 @@ class TablePage(TextBoxPage):
         args[0].insert_text_in_all(args[2:])
         args[0].submit_form()
         args[0].get_table()
-
-
-""" Testing """
-
-x = TablePage()
-x.open_page("https://demoqa.com/webtables")
-x.get_table()
-x.add_new_row('Ionut', 'Negru', 'inegru@luxoft.com', '22', '2000', 'IT')
-for aux in x.table:
-    print(aux)
-x.close_page()
