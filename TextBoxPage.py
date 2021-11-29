@@ -74,7 +74,10 @@ class TextBoxPage(Driver):
             To see the current keywords option use get_insert_keywords
         """
         for x in kwargs:
-            self.insert_text(x, kwargs[x])
+            try:
+                self.insert_text(x, kwargs[x])
+            except:
+                print(f'There is no label named : {x}')
         self.submit_form()
         
     def get_result_by_name(self, name=''):
