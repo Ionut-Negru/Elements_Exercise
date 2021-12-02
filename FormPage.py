@@ -10,8 +10,12 @@ class FormPage(Driver):
         self.open_page("https://demoqa.com/automation-practice-form")
         self.get_elements()
         self.form_dict={
-            'gender': 'gender-radio-',
-            'hobbie': 'hobbies-checkbox-',
+            'male': 'gender-radio-1',
+            'female': 'gender-radio-2',
+            'other': 'gender-radio-3',
+            'sports': 'hobbies-checkbox-1',
+            'reading': 'hobbies-checkbox-2',
+            'music': 'hobbies-checkbox-3',
             'state': 'react-select-3-input',
             'city': 'react-select-4-input'
             }
@@ -38,11 +42,11 @@ class FormPage(Driver):
     def select_gender(self, gender=''):
         match gender:
             case 'male':
-                ActionChains(self.browser).move_to_element(self.elements[f'{self.form_dict["gender"]}1']).click(self.elements[f'{self.form_dict["gender"]}1']).perform()
+                ActionChains(self.browser).move_to_element(self.elements[self.form_dict["male"]]).click(self.elements[self.form_dict["male"]]).perform()
             case 'female':
-                ActionChains(self.browser).move_to_element(self.elements[f'{self.form_dict["gender"]}2']).click(self.elements[f'{self.form_dict["gender"]}2']).perform()
+                ActionChains(self.browser).move_to_element(self.elements[self.form_dict["female"]]).click(self.elements[self.form_dict["female"]]).perform()
             case 'other':
-                ActionChains(self.browser).move_to_element(self.elements[f'{self.form_dict["gender"]}3']).click(self.elements[f'{self.form_dict["gender"]}3']).perform()
+                ActionChains(self.browser).move_to_element(self.elements[self.form_dict["other"]]).click(self.elements[self.form_dict["other"]]).perform()
             case _:
                 return 'The selected gender is not an option'
             
@@ -105,30 +109,14 @@ class FormPage(Driver):
         self.elements['subjectsInput'].send_keys(subjects)
         self.elements['subjectsInput'].send_keys(Keys.ENTER)
     
-    def hobbie_check_box_selection(func):
-        def wrapper(*args, **kwargs):
-            element = func(*args,**kwargs)
-            if element != None:
-                ActionChains(args[0].browser).move_to_element(element).perform()
-                try:
-                    element.click()
-                except:
-                    ActionChains(args[0].browser).move_to_element(element).send_keys(Keys.PAGE_DOWN).move_to_element(element).click(element).perform()
-            else:
-                print("The hobbie is not available")
-        return wrapper
-            
-    @hobbie_check_box_selection
     def select_hobbie(self, hobbie=''):
-        match hobbie:
-            case 'sports':
-                return self.elements[f'{self.form_dict["hobbie"]}1']
-            case 'Reading':
-                return self.elements[f'{self.form_dict["hobbie"]}2']
-            case 'Music':
-                return self.elements[f'{self.form_dict["hobbie"]}3']
-            case _:
-                return None
+        element = self.elements[self.form_dict[hobbie]]
+        ActionChains(args[0].browser).move_to_element(element).perform()
+        try:
+            element.click()
+        except:
+            ActionChains(args[0].browser).move_to_element(element).send_keys(Keys.PAGE_DOWN).move_to_element(element).click(element).perform()
+            
     
     def set_current_address(self, address=''):
         self.elements['currentAddress'].clear()
