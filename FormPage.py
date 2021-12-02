@@ -9,6 +9,13 @@ class FormPage(Driver):
         super().__init__()
         self.open_page("https://demoqa.com/automation-practice-form")
         self.get_elements()
+        self.form_dict={
+            'gender': 'gender-radio-',
+            'hobbie': 'hobbies-checkbox-',
+            'state': 'react-select-3-input',
+            'city': 'react-select-4-input'
+            }
+        
         
     def get_elements(self):
         wrappers = self.browser.find_elements_by_xpath("//form[@id='userForm']/div[@class='mt-2 row']")
@@ -31,11 +38,11 @@ class FormPage(Driver):
     def select_gender(self, gender=''):
         match gender:
             case 'male':
-                ActionChains(self.browser).move_to_element(self.elements['gender-radio-1']).click(self.elements['gender-radio-1']).perform()
+                ActionChains(self.browser).move_to_element(self.elements[f'{self.form_dict["gender"]}1']).click(self.elements[f'{self.form_dict["gender"]}1']).perform()
             case 'female':
-                ActionChains(self.browser).move_to_element(self.elements['gender-radio-2']).click(self.elements['gender-radio-2']).perform()
+                ActionChains(self.browser).move_to_element(self.elements[f'{self.form_dict["gender"]}2']).click(self.elements[f'{self.form_dict["gender"]}2']).perform()
             case 'other':
-                ActionChains(self.browser).move_to_element(self.elements['gender-radio-3']).click(self.elements['gender-radio-3']).perform()
+                ActionChains(self.browser).move_to_element(self.elements[f'{self.form_dict["gender"]}3']).click(self.elements[f'{self.form_dict["gender"]}3']).perform()
             case _:
                 return 'The selected gender is not an option'
             
@@ -115,11 +122,11 @@ class FormPage(Driver):
     def select_hobbie(self, hobbie=''):
         match hobbie:
             case 'sports':
-                return self.elements['hobbies-checkbox-1']
+                return self.elements[f'{self.form_dict["hobbie"]}1']
             case 'Reading':
-                return self.elements['hobbies-checkbox-2']
+                return self.elements[f'{self.form_dict["hobbie"]}2']
             case 'Music':
-                return self.elements['hobbies-checkbox-3']
+                return self.elements[f'{self.form_dict["hobbie"]}3']
             case _:
                 return None
     
@@ -132,14 +139,14 @@ class FormPage(Driver):
         element.send_keys(photo_path)
     
     def select_state_option(self, option=1):
-        state_element = self.elements['react-select-3-input']
+        state_element = self.elements[self.form_dict['state']]
         state_element.send_keys('')
         ActionChains(self.browser).click(state_element).perform()
         options = self.browser.find_elements_by_xpath("//div[contains(@id, 'select-3-option')]")
         options[option].click()
         
     def select_city_option(self, option=1):
-        city_element = self.elements['react-select-4-input']
+        city_element = self.elements[self.form_dict['city']]
         city_element.send_keys('')
         ActionChains(self.browser).click(city_element).perform()
         options = self.browser.find_elements_by_xpath("//div[contains(@id, 'select-4-option')]")
@@ -169,17 +176,16 @@ class FormPage(Driver):
     
                 
 """ Testing """
-page = FormPage()
-page.set_name('Ionut', 'Negru')
-page.set_email('test@example.com')
-page.select_gender('male')
-page.set_user_number('0757582322')
-page.set_user_date_of_birth(1999, 5, 7)
-page.set_subjects('Math')
-page.select_hobbie('sports')
-page.set_current_address('A fictive address')
-page.upload_photo('C:\\Users\\INegru\\Desktop\\nature.jfif')
-page.select_state_and_city(0, 1)
-page.submit_form()
-page.get_results()
-page.close_page()
+#page = FormPage()
+#page.set_name('Ionut', 'Negru')
+#page.set_email('test@example.com')
+#page.select_gender('male')
+#page.set_user_number('0757582322')
+#page.set_user_date_of_birth(1999, 5, 7)
+#page.set_subjects('Math')
+#page.select_hobbie('sports')
+#page.set_current_address('A fictive address')
+#page.upload_photo('C:\\Users\\INegru\\Desktop\\nature.jfif')
+#page.select_state_and_city(0, 1)
+#page.submit_form()
+#page.close_page()
